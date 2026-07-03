@@ -42,8 +42,7 @@ def process_result[T, R](
 
 
 def raise_http_exception(fail: Failure) -> NoReturn:
-    """Maps a Failure object to an HTTP exception using a dictionary lookup.
-    """
+    """Maps a Failure object to an HTTP exception using a dictionary lookup."""
     status_code = ERROR_MAPPING.get(fail.error, status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     raise HTTPException(

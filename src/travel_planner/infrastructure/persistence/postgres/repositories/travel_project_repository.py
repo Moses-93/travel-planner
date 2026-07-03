@@ -38,46 +38,52 @@ class PostgresTravelProjectRepository(TravelProjectRepository):
         await self._session.flush()
 
     async def _update(self, project: TravelProject) -> None:
-        project_stmt = insert(TravelProjectORM).values(
-            project_id=project.project_id,
-            name=project.name,
-            description=project.description,
-            start_date=project.start_date,
-            is_completed=project.is_completed,
-        ).on_conflict_do_update(
-            index_elements=["project_id"],
-            set_=dict(
+        project_stmt = (
+            insert(TravelProjectORM)
+            .values(
+                project_id=project.project_id,
                 name=project.name,
                 description=project.description,
                 start_date=project.start_date,
                 is_completed=project.is_completed,
-            ),
+            )
+            .on_conflict_do_update(
+                index_elements=["project_id"],
+                set_={
+                    "name": project.name,
+                    "description": project.description,
+                    "start_date": project.start_date,
+                    "is_completed": project.is_completed,
+                },
+            )
         )
         await self._session.execute(project_stmt)
 
         if project.places:
             place_dicts = [
-                dict(
-                    place_id=p.place_id,
-                    external_id=p.external_id,
-                    project_id=p.project_id,
-                    notes=p.notes,
-                    is_visited=p.is_visited,
-                )
+                {
+                    "place_id": p.place_id,
+                    "external_id": p.external_id,
+                    "project_id": p.project_id,
+                    "notes": p.notes,
+                    "is_visited": p.is_visited,
+                }
                 for p in project.places
             ]
             places_stmt = insert(TravelPlaceORM).values(place_dicts)
             places_stmt = places_stmt.on_conflict_do_update(
                 index_elements=["project_id", "external_id"],
-                set_=dict(
-                    notes=places_stmt.excluded.notes,
-                    is_visited=places_stmt.excluded.is_visited,
-                ),
+                set_={
+                    "notes": places_stmt.excluded.notes,
+                    "is_visited": places_stmt.excluded.is_visited,
+                },
             )
             await self._session.execute(places_stmt)
 
         place_ids = [p.place_id for p in project.places]
-        delete_stmt = delete(TravelPlaceORM).where(TravelPlaceORM.project_id == project.project_id)
+        delete_stmt = delete(TravelPlaceORM).where(
+            TravelPlaceORM.project_id == project.project_id
+        )
         if place_ids:
             delete_stmt = delete_stmt.where(TravelPlaceORM.place_id.notin_(place_ids))
         await self._session.execute(delete_stmt)
@@ -92,13 +98,22 @@ class PostgresTravelProjectRepository(TravelProjectRepository):
 
     @process_sqlalchemy_error
     async def get_all(self, limit: int = 10, offset: int = 0) -> list[TravelProject]:
-        stmt = select(TravelProjectORM).options(selectinload(TravelProjectORM.places)).limit(limit).offset(offset)
+        stmt = (
+            select(TravelProjectORM)
+            .options(selectinload(TravelProjectORM.places))
+            .limit(limit)
+            .offset(offset)
+        )
         models = (await self._session.scalars(stmt)).all()
         return [m.to_entity() for m in models]
 
     @process_sqlalchemy_error
     async def get_by_id(self, project_id: UUID) -> TravelProject | None:
-        stmt = select(TravelProjectORM).options(selectinload(TravelProjectORM.places)).where(TravelProjectORM.project_id == project_id)
+        stmt = (
+            select(TravelProjectORM)
+            .options(selectinload(TravelProjectORM.places))
+            .where(TravelProjectORM.project_id == project_id)
+        )
         orm_project = await self._session.scalar(stmt)
         if orm_project:
             return orm_project.to_entity()

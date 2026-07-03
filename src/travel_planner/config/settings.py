@@ -14,7 +14,9 @@ class Settings(BaseSettings):
     POSTGRES_DB: str = Field(default="travel_planner")
     DB_POOL_SIZE: int = Field(default=20)
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
+    )
 
     @property
     def database_url(self) -> str:

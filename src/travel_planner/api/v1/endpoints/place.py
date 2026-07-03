@@ -37,7 +37,7 @@ router = APIRouter()
     summary="Add a place to a travel project",
     responses={
         400: {"description": "Place is already in project"},
-        404: {"description": "Project not found or place does not exist"}
+        404: {"description": "Project not found or place does not exist"},
     },
 )
 async def add_place_to_project(

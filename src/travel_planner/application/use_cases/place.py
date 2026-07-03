@@ -1,5 +1,4 @@
 from collections.abc import Sequence
-from uuid import UUID
 
 from travel_planner.application.dtos import (
     AddProjectPlace,
@@ -72,7 +71,9 @@ class RemoveProjectPlaceUseCase:
         self._projects = projects
 
     @process_application_exceptions
-    async def execute(self, command: RemoveProjectPlaceCommand) -> Result[TravelProject]:
+    async def execute(
+        self, command: RemoveProjectPlaceCommand
+    ) -> Result[TravelProject]:
         """Remove a place from a travel project.
 
         Args:
@@ -112,9 +113,13 @@ class UpdatePlacesNotesUseCase:
         if not project:
             return Failure(error=AppError.NOT_FOUND, message="Project not found.")
 
-        place = next((p for p in project.places if p.place_id == command.place_id), None)
+        place = next(
+            (p for p in project.places if p.place_id == command.place_id), None
+        )
         if not place:
-            return Failure(error=AppError.NOT_FOUND, message="Place not found in this project.")
+            return Failure(
+                error=AppError.NOT_FOUND, message="Place not found in this project."
+            )
 
         try:
             place.update_notes(command.notes)
@@ -143,9 +148,13 @@ class MarkPlaceVisitedUseCase:
         if not project:
             return Failure(error=AppError.NOT_FOUND, message="Project not found.")
 
-        place = next((p for p in project.places if p.place_id == command.place_id), None)
+        place = next(
+            (p for p in project.places if p.place_id == command.place_id), None
+        )
         if not place:
-            return Failure(error=AppError.NOT_FOUND, message="Place not found in this project.")
+            return Failure(
+                error=AppError.NOT_FOUND, message="Place not found in this project."
+            )
 
         try:
             project.mark_place_visited(command.place_id)
@@ -161,7 +170,9 @@ class GetPlacesByProjectUseCase:
         self._places = places
 
     @process_application_exceptions
-    async def execute(self, query: GetProjectPlacesQuery) -> Result[Sequence[TravelPlace]]:
+    async def execute(
+        self, query: GetProjectPlacesQuery
+    ) -> Result[Sequence[TravelPlace]]:
         """Retrieve all places associated with a travel project.
 
         Args:

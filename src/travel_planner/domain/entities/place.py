@@ -14,14 +14,13 @@ class TravelPlace:
     is_visited: bool = False
     place_id: UUID = field(default_factory=uuid4)
 
-
     def update_notes(self, notes: str) -> None:
         """Update notes for the place."""
         self.notes = notes
 
     def mark_visited(self) -> None:
         """Mark the place as visited.
-        
+
         Raises:
             PlaceAlreadyVisitedError: If the place has already been marked as visited.
         """

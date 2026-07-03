@@ -9,6 +9,7 @@ from travel_planner.api.deps import (
     RemoveProjectDependency,
     UpdateProjectDetailsDependency,
 )
+from travel_planner.api.utils.result import (
     process_result,
     raise_http_exception,
     void,
@@ -34,7 +35,7 @@ router = APIRouter()
     summary="Create a new travel project",
     responses={
         400: {"description": "Project data validation failed"},
-        422: {"description": "Provided places are invalid or unavailable"}
+        422: {"description": "Provided places are invalid or unavailable"},
     },
 )
 async def create_project(
@@ -85,7 +86,7 @@ async def get_project(
     summary="Update a travel project",
     responses={
         404: {"description": "Travel project not found"},
-        422: {"description": "Update data is invalid"}
+        422: {"description": "Update data is invalid"},
     },
 )
 async def update_project(

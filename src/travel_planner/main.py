@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Manage the lifespan of the FastAPI application.
 
-    This context manager handles setup and teardown events, such as 
+    This context manager handles setup and teardown events, such as
     initializing connections or cleaning up resources when the app shuts down.
 
     Args:

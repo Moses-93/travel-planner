@@ -17,8 +17,7 @@ from travel_planner.application.messages.errors import ErrorMessages
 def process_application_exceptions[**P, R](
     func: Callable[P, Awaitable[R]],
 ) -> Callable[P, Awaitable[R | Failure]]:
-    """Translates Domain and Persistence exceptions into Failure objects.
-    """
+    """Translates Domain and Persistence exceptions into Failure objects."""
 
     @wraps(func)
     async def wrapper(*args: P.args, **kwargs: P.kwargs) -> R | Failure:
@@ -31,13 +30,11 @@ def process_application_exceptions[**P, R](
             )
         except PersistenceConstraintError:
             return Failure(
-                message=ErrorMessages.constraint_violation(),
-                error=AppError.CONFLICT
+                message=ErrorMessages.constraint_violation(), error=AppError.CONFLICT
             )
         except PersistenceInvalidDataError:
             return Failure(
-                message=ErrorMessages.invalid_data(),
-                error=AppError.INTERNAL_ERROR
+                message=ErrorMessages.invalid_data(), error=AppError.INTERNAL_ERROR
             )
         except (PersistenceQueryError, PersistenceError):
             return Failure(

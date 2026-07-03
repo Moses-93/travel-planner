@@ -39,6 +39,5 @@ class HTTPClient(Protocol):
         ...
 
     async def close(self) -> None:
-        """Closes the underlying HTTP client and releases resources (connections).
-        """
+        """Closes the underlying HTTP client and releases resources (connections)."""
         ...

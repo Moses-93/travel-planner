@@ -4,8 +4,7 @@ from typing import Any
 
 @dataclass(frozen=True, slots=True)
 class HTTPRequest[T]:
-    """A generic container for HTTP request data.
-    """
+    """A generic container for HTTP request data."""
 
     url: str
     body: dict[str, Any] | None = field(default=None)
@@ -15,8 +14,7 @@ class HTTPRequest[T]:
 
 @dataclass(frozen=True, slots=True)
 class HTTPResponse[T]:
-    """A standardized, immutable container for HTTP response data.
-    """
+    """A standardized, immutable container for HTTP response data."""
 
     status_code: int
     data: T

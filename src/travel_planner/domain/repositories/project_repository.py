@@ -13,7 +13,7 @@ class TravelProjectRepository(ABC):
 
         Args:
             project (TravelProject): The project to save.
-        
+
         Raises:
             PersistenceError: If a persistence error occurs.
         """
@@ -41,7 +41,7 @@ class TravelProjectRepository(ABC):
 
         Returns:
             list[TravelProject]: A list of travel projects.
-            
+
         Raises:
             PersistenceError: If a persistence error occurs.
         """
@@ -56,7 +56,7 @@ class TravelProjectRepository(ABC):
 
         Returns:
             TravelProject | None: The found project or None.
-            
+
         Raises:
             PersistenceError: If a persistence error occurs.
         """

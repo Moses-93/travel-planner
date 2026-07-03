@@ -1,5 +1,4 @@
 from collections.abc import Sequence
-from uuid import UUID
 
 from travel_planner.application.dtos import (
     CreateProject,
@@ -45,8 +44,9 @@ class CreateProjectUseCase:
         )
 
         try:
-            for external_id in command.external_place_ids:
-                is_valid = await self._place_gateway.validate_place(external_id)
+            if command.external_place_ids:
+                for external_id in command.external_place_ids:
+                    is_valid = await self._place_gateway.validate_place(external_id)
                     if not is_valid:
                         return Failure(
                             error=AppError.UNPROCESSABLE_ENTITY,

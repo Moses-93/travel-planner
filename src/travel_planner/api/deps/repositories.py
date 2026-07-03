@@ -21,5 +21,7 @@ def get_place_repository(session: SessionDependency) -> TravelPlaceRepository:
     return PostgresTravelPlaceRepository(session=session)
 
 
-ProjectRepoDependency = Annotated[TravelProjectRepository, Depends(get_project_repository)]
+ProjectRepoDependency = Annotated[
+    TravelProjectRepository, Depends(get_project_repository)
+]
 PlaceRepoDependency = Annotated[TravelPlaceRepository, Depends(get_place_repository)]

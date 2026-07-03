@@ -12,7 +12,7 @@ class PlaceGateway(Protocol):
 
         Returns:
             bool: True if the place exists, False otherwise.
-            
+
         Raises:
             HttpClientError: If a network or HTTP error occurs during the request.
         """

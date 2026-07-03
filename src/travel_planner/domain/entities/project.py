@@ -23,7 +23,7 @@ class TravelProject:
 
     def add_place(self, place: TravelPlace) -> None:
         """Add a place to the project, enforcing business rules.
-        
+
         Raises:
             CountPlacesError: If the project already has the maximum allowed places.
             DuplicatePlaceError: If a place with the same external ID is already in the project.
@@ -39,7 +39,7 @@ class TravelProject:
 
     def remove_place(self, place_id: UUID) -> None:
         """Remove a place from the project.
-        
+
         Raises:
             ProjectHasVisitedPlacesError: If the place has been visited.
         """
@@ -48,7 +48,9 @@ class TravelProject:
             return
 
         if place.is_visited:
-            raise ProjectHasVisitedPlacesError("Cannot remove a place that has been visited.")
+            raise ProjectHasVisitedPlacesError(
+                "Cannot remove a place that has been visited."
+            )
 
         self.places.remove(place)
         self._update_completion_status()
@@ -69,7 +71,7 @@ class TravelProject:
 
     def mark_place_visited(self, place_id: UUID) -> None:
         """Mark a specific place as visited and update project status.
-        
+
         Raises:
             PlaceAlreadyVisitedError: If the place has already been marked as visited.
         """
@@ -82,7 +84,7 @@ class TravelProject:
 
     def check_can_be_deleted(self) -> None:
         """Verify if the project can be safely deleted.
-        
+
         Raises:
             ProjectHasVisitedPlacesError: If the project has visited places.
         """

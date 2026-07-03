@@ -16,7 +16,7 @@ class TravelPlaceRepository(ABC):
 
         Returns:
             list[TravelPlace]: A list of places in the project.
-            
+
         Raises:
             PersistenceError: If a persistence error occurs.
         """
@@ -31,7 +31,7 @@ class TravelPlaceRepository(ABC):
 
         Returns:
             TravelPlace | None: The found place or None.
-            
+
         Raises:
             PersistenceError: If a persistence error occurs.
         """

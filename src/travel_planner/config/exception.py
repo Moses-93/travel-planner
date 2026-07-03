@@ -1,3 +1,4 @@
 class TravelPlannerException(Exception):
     """The base project exception."""
+
     ...

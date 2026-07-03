@@ -16,7 +16,9 @@ class TravelPlaceORM(BaseORM):
 
     place_id: Mapped[UUID] = mapped_column(primary_key=True)
     external_id: Mapped[int] = mapped_column(nullable=False)
-    project_id: Mapped[UUID] = mapped_column(ForeignKey("travel_projects.project_id", ondelete="CASCADE"), nullable=False)
+    project_id: Mapped[UUID] = mapped_column(
+        ForeignKey("travel_projects.project_id", ondelete="CASCADE"), nullable=False
+    )
     notes: Mapped[str] = mapped_column(Text, default="", nullable=False)
     is_visited: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
 

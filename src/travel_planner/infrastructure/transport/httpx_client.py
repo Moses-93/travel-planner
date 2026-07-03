@@ -99,9 +99,7 @@ class HTTPXClient(HTTPClient):
                 reason=str(exc),
             ) from exc
 
-    def _map_response[T](
-        self, response: httpx.Response
-    ) -> HTTPResponse[T]:  # pyright: ignore[reportInvalidTypeVarUse]
+    def _map_response[T](self, response: httpx.Response) -> HTTPResponse[T]:  # pyright: ignore[reportInvalidTypeVarUse]
         try:
             data = response.json()
         except (json.JSONDecodeError, ValueError):
