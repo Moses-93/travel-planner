@@ -1,4 +1,4 @@
-.PHONY: dev format lint lint-fix test migrate makemigrations up up-build down
+.PHONY: dev format lint lint-fix migrate makemigrations up up-build down
 
 # ==============================================================================
 # Local Development (uv)
@@ -16,8 +16,6 @@ lint:
 lint-fix:
 	uvx ruff check --fix src/
 
-test:
-	uv run pytest
 
 # ==============================================================================
 # Database Migrations (alembic)
