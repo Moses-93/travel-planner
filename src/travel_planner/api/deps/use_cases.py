@@ -3,6 +3,7 @@ from travel_planner.api.deps.repositories import (
     PlaceRepoDependency,
     ProjectRepoDependency,
 )
+from travel_planner.api.deps.uow import UoWDependency
 from travel_planner.application.use_cases import (
     AddProjectPlaceUseCase,
     CreateProjectUseCase,
@@ -19,9 +20,9 @@ from travel_planner.application.use_cases import (
 
 
 def get_create_project_use_case(
-    repo: ProjectRepoDependency, gateway: PlaceGatewayDependency
+    repo: ProjectRepoDependency, gateway: PlaceGatewayDependency, uow: UoWDependency
 ) -> CreateProjectUseCase:
-    return CreateProjectUseCase(projects=repo, place_gateway=gateway)
+    return CreateProjectUseCase(projects=repo, place_gateway=gateway, uow=uow)
 
 
 def get_travel_project_use_case(repo: ProjectRepoDependency) -> GetTravelProjectUseCase:
@@ -34,38 +35,40 @@ def get_travel_projects_use_case(
     return GetTravelProjectsUseCase(projects=repo)
 
 
-def get_remove_project_use_case(repo: ProjectRepoDependency) -> RemoveProjectUseCase:
-    return RemoveProjectUseCase(projects=repo)
+def get_remove_project_use_case(
+    repo: ProjectRepoDependency, uow: UoWDependency
+) -> RemoveProjectUseCase:
+    return RemoveProjectUseCase(projects=repo, uow=uow)
 
 
 def get_update_project_use_case(
-    repo: ProjectRepoDependency,
+    repo: ProjectRepoDependency, uow: UoWDependency
 ) -> UpdateProjectDetailsUseCase:
-    return UpdateProjectDetailsUseCase(projects=repo)
+    return UpdateProjectDetailsUseCase(projects=repo, uow=uow)
 
 
 def get_add_project_place_use_case(
-    repo: ProjectRepoDependency, gateway: PlaceGatewayDependency
+    repo: ProjectRepoDependency, gateway: PlaceGatewayDependency, uow: UoWDependency
 ) -> AddProjectPlaceUseCase:
-    return AddProjectPlaceUseCase(projects=repo, place_gateway=gateway)
+    return AddProjectPlaceUseCase(projects=repo, place_gateway=gateway, uow=uow)
 
 
 def get_remove_project_place_use_case(
-    repo: ProjectRepoDependency,
+    repo: ProjectRepoDependency, uow: UoWDependency
 ) -> RemoveProjectPlaceUseCase:
-    return RemoveProjectPlaceUseCase(projects=repo)
+    return RemoveProjectPlaceUseCase(projects=repo, uow=uow)
 
 
 def get_update_places_notes_use_case(
-    repo: ProjectRepoDependency,
+    repo: ProjectRepoDependency, uow: UoWDependency
 ) -> UpdatePlacesNotesUseCase:
-    return UpdatePlacesNotesUseCase(projects=repo)
+    return UpdatePlacesNotesUseCase(projects=repo, uow=uow)
 
 
 def get_mark_place_visited_use_case(
-    repo: ProjectRepoDependency,
+    repo: ProjectRepoDependency, uow: UoWDependency
 ) -> MarkPlaceVisitedUseCase:
-    return MarkPlaceVisitedUseCase(projects=repo)
+    return MarkPlaceVisitedUseCase(projects=repo, uow=uow)
 
 
 def get_places_by_project_use_case(

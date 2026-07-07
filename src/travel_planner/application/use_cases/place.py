@@ -12,7 +12,7 @@ from travel_planner.application.dtos import (
     UpdatePlaceNotes,
 )
 from travel_planner.application.enums import AppError
-from travel_planner.application.interfaces import PlaceGateway
+from travel_planner.application.interfaces import PlaceGateway, UnitOfWork
 from travel_planner.application.utils import process_application_exceptions
 from travel_planner.domain.entities import TravelPlace, TravelProject
 from travel_planner.domain.exceptions.base import DomainException
@@ -27,9 +27,11 @@ class AddProjectPlaceUseCase:
         self,
         projects: TravelProjectRepository,
         place_gateway: PlaceGateway,
+        uow: UnitOfWork,
     ) -> None:
         self._projects = projects
         self._place_gateway = place_gateway
+        self._uow = uow
 
     @process_application_exceptions
     async def execute(self, command: AddProjectPlace) -> Result[TravelProject]:
@@ -62,13 +64,15 @@ class AddProjectPlaceUseCase:
         except DomainException as e:
             return Failure(error=AppError.BAD_REQUEST, message=str(e))
 
-        await self._projects.save(project)
+        async with self._uow.transaction():
+            await self._projects.save(project)
         return Success(project)
 
 
 class RemoveProjectPlaceUseCase:
-    def __init__(self, projects: TravelProjectRepository) -> None:
+    def __init__(self, projects: TravelProjectRepository, uow: UnitOfWork) -> None:
         self._projects = projects
+        self._uow = uow
 
     @process_application_exceptions
     async def execute(
@@ -91,13 +95,15 @@ class RemoveProjectPlaceUseCase:
         except DomainException as e:
             return Failure(error=AppError.BAD_REQUEST, message=str(e))
 
-        await self._projects.save(project)
+        async with self._uow.transaction():
+            await self._projects.save(project)
         return Success(project)
 
 
 class UpdatePlacesNotesUseCase:
-    def __init__(self, projects: TravelProjectRepository) -> None:
+    def __init__(self, projects: TravelProjectRepository, uow: UnitOfWork) -> None:
         self._projects = projects
+        self._uow = uow
 
     @process_application_exceptions
     async def execute(self, command: UpdatePlaceNotes) -> Result[TravelProject]:
@@ -126,13 +132,15 @@ class UpdatePlacesNotesUseCase:
         except DomainException as e:
             return Failure(error=AppError.BAD_REQUEST, message=str(e))
 
-        await self._projects.save(project)
+        async with self._uow.transaction():
+            await self._projects.save(project)
         return Success(project)
 
 
 class MarkPlaceVisitedUseCase:
-    def __init__(self, projects: TravelProjectRepository) -> None:
+    def __init__(self, projects: TravelProjectRepository, uow: UnitOfWork) -> None:
         self._projects = projects
+        self._uow = uow
 
     @process_application_exceptions
     async def execute(self, command: MarkPlaceVisitedCommand) -> Result[TravelProject]:
@@ -161,7 +169,8 @@ class MarkPlaceVisitedUseCase:
         except DomainException as e:
             return Failure(error=AppError.BAD_REQUEST, message=str(e))
 
-        await self._projects.save(project)
+        async with self._uow.transaction():
+            await self._projects.save(project)
         return Success(project)
 
 
